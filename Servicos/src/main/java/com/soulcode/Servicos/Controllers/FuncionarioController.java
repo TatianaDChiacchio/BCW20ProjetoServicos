@@ -47,5 +47,19 @@ public class FuncionarioController {
 
     }
 
+    @DeleteMapping("/funcionarios/{idFuncionario}")
+    public ResponseEntity<Void> excluirFuncionario(@PathVariable Integer idFuncionario){
+        funcionarioService.excluirFuncionario(idFuncionario);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/funcionarios/{idFuncionario}")
+    public ResponseEntity<Funcionario> editarFuncionario(@PathVariable Integer idFuncionario,
+                                                         @RequestBody Funcionario funcionario){
+        funcionario.setIdFuncionario(idFuncionario);
+        funcionarioService.editarFuncionario(funcionario);
+        return ResponseEntity.ok().body(funcionario);
+    }
+
 
 }

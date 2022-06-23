@@ -47,4 +47,13 @@ public class FuncionarioService {
         funcionario.setIdFuncionario(null);
         return funcionarioRepository.save(funcionario);
     }
+
+    public void excluirFuncionario(Integer idFuncionario){
+        //mostrarUmFuncionarioPeloId(idFuncionario);
+        funcionarioRepository.deleteById(idFuncionario);
+    }
+    public Funcionario editarFuncionario(Funcionario funcionario){
+        return funcionarioRepository.save(funcionario);
+    }
+
 }
