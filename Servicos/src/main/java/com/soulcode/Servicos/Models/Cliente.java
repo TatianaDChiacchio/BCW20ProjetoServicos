@@ -1,6 +1,10 @@
 package com.soulcode.Servicos.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Cliente {
@@ -13,6 +17,10 @@ public class Cliente {
 
     @Column(nullable = false, length = 100)
     private String email;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "cliente")
+    private List<Chamado> chamados = new ArrayList<>();
 
     public Integer getIdCliente() {
         return idCliente;
@@ -36,5 +44,13 @@ public class Cliente {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Chamado> getChamados() {
+        return chamados;
+    }
+
+    public void setChamados(List<Chamado> chamados) {
+        this.chamados = chamados;
     }
 }
