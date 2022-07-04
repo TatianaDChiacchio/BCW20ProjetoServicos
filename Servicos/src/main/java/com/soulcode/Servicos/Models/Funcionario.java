@@ -27,6 +27,12 @@ public class Funcionario {
     @OneToMany(mappedBy = "funcionario")
     private List<Chamado> chamados = new ArrayList<Chamado>();
 
+    //a primeira parte da anotação do relacionamento diz respeito a tabela que estamos inserindo o relacionamento(funcionario)
+    //a segunda parte da anotação do relacionamento diz respeito a segunda tabela, com a qual esta vai se relacionar
+    @ManyToOne
+    @JoinColumn(name = "idCargo")
+    private Cargo cargo;
+
     public Integer getIdFuncionario() {
         return idFuncionario;
     }
@@ -65,5 +71,13 @@ public class Funcionario {
 
     public void setChamados(List<Chamado> chamados) {
         this.chamados = chamados;
+    }
+
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
+        this.cargo = cargo;
     }
 }

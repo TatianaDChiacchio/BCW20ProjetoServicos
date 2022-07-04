@@ -1,6 +1,8 @@
 package com.soulcode.Servicos.Services;
 
+import com.soulcode.Servicos.Models.Cargo;
 import com.soulcode.Servicos.Models.Funcionario;
+import com.soulcode.Servicos.Repositories.CargoRepository;
 import com.soulcode.Servicos.Repositories.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class FuncionarioService {
     // aqui se faz a injeção de dependência
     @Autowired
     FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    CargoRepository cargoRepository;
 
     //primeiro serviço na tabela de funcionário vai ser a leitura de todos
     //os funcionários cadastrados
@@ -41,10 +46,17 @@ public class FuncionarioService {
         return funcionario.orElseThrow();
     }
 
+    public List<Funcionario> mostrarTodosFuncionariosDeUmCargo(Integer idCargo){
+        Optional<Cargo> cargo = cargoRepository.findById(idCargo);
+        return funcionarioRepository.findByCargo(cargo);
+    }
+
     //vamos criar um serviço para cadastrar um novo funcionário
-    public Funcionario cadastrarFuncionario(Funcionario funcionario){
+    public Funcionario cadastrarFuncionario(Funcionario funcionario, Integer idCargo){
         //só por precaução nós vamos colocar o id do funcionário como nullo
         funcionario.setIdFuncionario(null);
+        Optional<Cargo> cargo = cargoRepository.findById(idCargo);
+        funcionario.setCargo(cargo.get());
         return funcionarioRepository.save(funcionario);
     }
 
