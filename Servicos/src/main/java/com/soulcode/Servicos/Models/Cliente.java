@@ -22,6 +22,11 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente")
     private List<Chamado> chamados = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_endereco", unique=true)
+    private EnderecoCliente enderecoCliente;
+
+
     public Integer getIdCliente() {
         return idCliente;
     }
@@ -52,5 +57,13 @@ public class Cliente {
 
     public void setChamados(List<Chamado> chamados) {
         this.chamados = chamados;
+    }
+
+    public EnderecoCliente getEnderecoCliente() {
+        return enderecoCliente;
+    }
+
+    public void setEnderecoCliente(EnderecoCliente enderecoCliente) {
+        this.enderecoCliente = enderecoCliente;
     }
 }
