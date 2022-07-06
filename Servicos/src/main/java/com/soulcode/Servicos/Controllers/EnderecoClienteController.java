@@ -2,6 +2,7 @@ package com.soulcode.Servicos.Controllers;
 
 import com.soulcode.Servicos.Models.EnderecoCliente;
 import com.soulcode.Servicos.Services.EnderecoClienteService;
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,11 +34,24 @@ public class EnderecoClienteController {
     @PostMapping("/enderecoCliente/{idCliente}")
     public ResponseEntity<EnderecoCliente> cadastrarEnderecoDoCliente(@PathVariable Integer idCliente,
                                                                       @RequestBody EnderecoCliente enderecoCliente){
-        enderecoCliente = enderecoClienteService.cadastrarEnderecoDoCliente(enderecoCliente,idCliente);
-        URI novaUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(enderecoCliente.getIdEndereco()).toUri();
+        try{
+            enderecoCliente = enderecoClienteService.cadastrarEnderecoDoCliente(enderecoCliente,idCliente);
+            URI novaUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(enderecoCliente.getIdEndereco()).toUri();
 
-        return ResponseEntity.created(novaUri).body(enderecoCliente);
+            return ResponseEntity.created(novaUri).body(enderecoCliente);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+    @PutMapping("/enderecoCliente/{idEndereco}")
+    public ResponseEntity<EnderecoCliente> editarEndereco(@PathVariable Integer idEndereco,
+                                                          @RequestBody EnderecoCliente enderecoCliente){
+        enderecoCliente.setIdEndereco(idEndereco);
+        enderecoClienteService.editarEndereco(enderecoCliente);
+        return ResponseEntity.ok().body(enderecoCliente);
     }
 
 

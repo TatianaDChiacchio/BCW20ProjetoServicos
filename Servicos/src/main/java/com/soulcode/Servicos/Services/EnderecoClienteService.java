@@ -32,18 +32,23 @@ public class EnderecoClienteService {
     //regras 1 -> para cadastrar um endereço, o cliente já deve estar cadastrado no database
     //       2 -> no momento do cadastro do endereço, precisamos passar o id do cliente que é o dono desse endereço
     //       3 -> o id do endereço vai ser o mesmo id do cliente
-    public EnderecoCliente cadastrarEnderecoDoCliente (EnderecoCliente enderecoCliente, Integer idCliente){
-        enderecoCliente.setIdEndereco(idCliente);
-        enderecoClienteRepository.save(enderecoCliente);
-
+    //       4 -> não permitir que um endereço seja salvo sem a existência do respectivo cliente
+    public EnderecoCliente cadastrarEnderecoDoCliente (EnderecoCliente enderecoCliente, Integer idCliente) throws Exception {
+        // estamos declarando um optional de cliente e atribuindo para este os dados do cliente que receberá o novo endereço
         Optional<Cliente> cliente = clienteRepository.findById(idCliente);
-        cliente.get().setEnderecoCliente(enderecoCliente);
-        clienteRepository.save(cliente.get());
-        return enderecoCliente;
+        if(cliente.isPresent()){
+            enderecoCliente.setIdEndereco(idCliente);
+            enderecoClienteRepository.save(enderecoCliente);
 
-//        Cliente cliente = clienteRepository.getById(idCliente);
-//        cliente.setEnderecoCliente(enderecoCliente);
-//        clienteRepository.save(cliente);
-//        return enderecoCliente;
+            cliente.get().setEnderecoCliente(enderecoCliente);
+            clienteRepository.save(cliente.get());
+            return enderecoCliente;
+        }else{
+            throw new Exception();
+        }
+    }
+
+    public EnderecoCliente editarEndereco(EnderecoCliente enderecoCliente){
+        return enderecoClienteRepository.save(enderecoCliente);
     }
 }
