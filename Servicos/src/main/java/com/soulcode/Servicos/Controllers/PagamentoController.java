@@ -36,6 +36,12 @@ public class PagamentoController {
         return pagamentos;
     }
 
+    @GetMapping("/pagamentosChamadosComCliente")
+    public List<List> orcamentoComServicoCliente(){
+        List<List> pagamentos = pagamentoService.orcamentoComServicoCliente();
+        return pagamentos;
+    }
+
     @PostMapping("/pagamentos/{idChamado}")
     public ResponseEntity<Pagamento> cadastrarPagamento(@PathVariable Integer idChamado,
                                                         @RequestBody Pagamento pagamento){
@@ -59,5 +65,6 @@ public class PagamentoController {
         pagamentoService.modificarStatusPagamento(idPagamento,status);
         return ResponseEntity.noContent().build();
     }
+
 
 }

@@ -4,6 +4,8 @@ import com.soulcode.Servicos.Models.Cargo;
 import com.soulcode.Servicos.Models.Funcionario;
 import com.soulcode.Servicos.Repositories.CargoRepository;
 import com.soulcode.Servicos.Repositories.FuncionarioRepository;
+import com.soulcode.Servicos.Services.Exceptions.DataIntegrityViolationException;
+import com.soulcode.Servicos.Services.Exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +39,9 @@ public class FuncionarioService {
     public Funcionario mostrarUmFuncionarioPeloId(Integer idFuncionario)
     {
         Optional<Funcionario> funcionario = funcionarioRepository.findById(idFuncionario);
-        return funcionario.orElseThrow();
+        return funcionario.orElseThrow(
+                () -> new EntityNotFoundException("Funcionário não cadastrado: " + idFuncionario)
+        );
     }
 
     //vamos criar mais um serviço pra buscar um funcionário pelo seu email
@@ -52,7 +56,7 @@ public class FuncionarioService {
     }
 
     //vamos criar um serviço para cadastrar um novo funcionário
-    public Funcionario cadastrarFuncionario(Funcionario funcionario, Integer idCargo){
+    public Funcionario cadastrarFuncionario(Funcionario funcionario, Integer idCargo) throws DataIntegrityViolationException {
         //só por precaução nós vamos colocar o id do funcionário como nullo
         funcionario.setIdFuncionario(null);
         Optional<Cargo> cargo = cargoRepository.findById(idCargo);
