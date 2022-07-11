@@ -56,12 +56,23 @@ public class FuncionarioService {
     }
 
     //vamos criar um serviço para cadastrar um novo funcionário
-    public Funcionario cadastrarFuncionario(Funcionario funcionario, Integer idCargo) throws DataIntegrityViolationException {
-        //só por precaução nós vamos colocar o id do funcionário como nullo
-        funcionario.setIdFuncionario(null);
-        Optional<Cargo> cargo = cargoRepository.findById(idCargo);
-        funcionario.setCargo(cargo.get());
-        return funcionarioRepository.save(funcionario);
+    public Funcionario cadastrarFuncionario(Funcionario funcionario, Integer idCargo) {
+
+        //if(funcionarioRepository.findByEmail(funcionario.getEmail()) == null){
+        try{
+            //só por precaução nós vamos colocar o id do funcionário como nullo
+            funcionario.setIdFuncionario(null);
+            Optional<Cargo> cargo = cargoRepository.findById(idCargo);
+            funcionario.setCargo(cargo.get());
+            return funcionarioRepository.save(funcionario);
+        }catch(org.springframework.dao.DataIntegrityViolationException e){
+            throw new DataIntegrityViolationException("Já existe um fucionário com esse email");
+        }
+
+
+
+
+
     }
 
     public void excluirFuncionario(Integer idFuncionario){

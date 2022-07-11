@@ -25,6 +25,7 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<StandardError> dataIntegrityViolationException(DataIntegrityViolationException e,HttpServletRequest request ){
         StandardError erro = new StandardError();
         erro.setTimestamp(Instant.now());
