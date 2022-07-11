@@ -2,6 +2,7 @@ package com.soulcode.Servicos.Services;
 
 import com.soulcode.Servicos.Models.Cargo;
 import com.soulcode.Servicos.Repositories.CargoRepository;
+import com.soulcode.Servicos.Services.Exceptions.DataIntegrityViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,12 @@ public class CargoService {
     }
 
     public void excluirCargo(Integer idCargo){
-        cargoRepository.deleteById(idCargo);
+        try{
+            cargoRepository.deleteById(idCargo);
+        }catch(org.springframework.dao.DataIntegrityViolationException e){
+            throw new DataIntegrityViolationException("Esse cargo não pode ser excluído porque existem funcionário(s) associado(s) a ele");
+        }
+
+
     }
 }

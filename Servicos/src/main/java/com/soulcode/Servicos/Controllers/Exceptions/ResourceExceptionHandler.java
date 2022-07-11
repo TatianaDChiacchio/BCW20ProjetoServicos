@@ -30,7 +30,7 @@ public class ResourceExceptionHandler {
         StandardError erro = new StandardError();
         erro.setTimestamp(Instant.now());
         erro.setStatus(HttpStatus.CONFLICT.value());
-        erro.setError("atributo não pode ser duplicado");
+        erro.setError("Há conflitos nas regras de negócio da aplicação");
         erro.setMessage(e.getMessage());
         erro.setPath(request.getRequestURI());
 
