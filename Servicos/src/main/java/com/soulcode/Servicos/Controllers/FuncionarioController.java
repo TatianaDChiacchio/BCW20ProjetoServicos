@@ -57,13 +57,11 @@ public class FuncionarioController {
 
     @DeleteMapping("/funcionarios/{idFuncionario}")
     public ResponseEntity<Funcionario> excluirFuncionario(@PathVariable Integer idFuncionario){
-        
-        Funcionario funcionario = funcionarioService.mostrarUmFuncionarioPeloId(idFuncionario);
-        if (funcionario != null){
+
+
             funcionarioService.excluirFuncionario(idFuncionario);
             return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+      
     }
 
     @PutMapping("/funcionarios/{idFuncionario}")

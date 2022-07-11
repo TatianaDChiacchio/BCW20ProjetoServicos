@@ -77,7 +77,12 @@ public class FuncionarioService {
 
     public void excluirFuncionario(Integer idFuncionario){
         //mostrarUmFuncionarioPeloId(idFuncionario);
-        funcionarioRepository.deleteById(idFuncionario);
+        Optional<Funcionario> funcionario = funcionarioRepository.findById(idFuncionario);
+        if(funcionario.isPresent()) {
+            funcionarioRepository.deleteById(idFuncionario);
+        }else{
+            throw new EntityNotFoundException("Funcionário não cadastrado: " + idFuncionario);
+        }
     }
     public Funcionario editarFuncionario(Funcionario funcionario){
         return funcionarioRepository.save(funcionario);
