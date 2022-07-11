@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -55,9 +56,14 @@ public class FuncionarioController {
     }
 
     @DeleteMapping("/funcionarios/{idFuncionario}")
-    public ResponseEntity<Void> excluirFuncionario(@PathVariable Integer idFuncionario){
-        funcionarioService.excluirFuncionario(idFuncionario);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Funcionario> excluirFuncionario(@PathVariable Integer idFuncionario){
+        
+        Funcionario funcionario = funcionarioService.mostrarUmFuncionarioPeloId(idFuncionario);
+        if (funcionario != null){
+            funcionarioService.excluirFuncionario(idFuncionario);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/funcionarios/{idFuncionario}")
